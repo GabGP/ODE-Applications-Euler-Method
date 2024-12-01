@@ -26,13 +26,33 @@ with dpg.viewport_menu_bar():
 with dpg.window(tag="main_window", menubar=True):
     dpg.add_text("Euler Method")
     dpg.add_separator()
+    
+    # Adds the Initial Value section
+    dpg.add_text("Initial Value: ", indent=40)
+    with dpg.group(horizontal=True):
+        dpg.add_text("x0=")
+        dpg.add_input_float(tag="x0", step=0.5, width=100)
 
-    dpg.add_text("Equation")
+        dpg.add_text("y0=")
+        dpg.add_input_float(tag="y0", step=0.5, width=100)
 
-    # Creates a group to add a label to the left of the input box
+    # Adds the Stepsize + Value to Calculate section
+    with dpg.group(horizontal=True):
+        dpg.add_text("Stepsize: ", indent=40)
+        dpg.add_text("Solve for y(x): ", indent=180)
+    
+    with dpg.group(horizontal=True):
+        dpg.add_text(" h=")
+        dpg.add_input_float(tag="h", step=0.05, width=100)
+
+        dpg.add_text(" x=")
+        dpg.add_input_float(tag="x", step=0.5, width=100)
+
+    # Adds the Equation section
+    dpg.add_text("Equation: ", indent=40)
     with dpg.group(horizontal=True):
         dpg.add_text("y\'=")
-        dpg.add_input_text(tag="equation_input", hint="Type a First-Order Equation to Solve...")
+        dpg.add_input_text(tag="equation_input", hint="Type a First-Order ODE to Solve...", width=300)
 
 dpg.setup_dearpygui()
 dpg.show_viewport()
