@@ -54,6 +54,8 @@ with dpg.window(tag="main_window", menubar=True):
         dpg.add_text("y\'=")
         dpg.add_input_text(tag="equation_input", hint="Type a First-Order ODE to Solve...", width=300)
 
+    dpg.add_button(label="Calculate", indent=258) #TODO: Add action to the button
+
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("main_window", True)
