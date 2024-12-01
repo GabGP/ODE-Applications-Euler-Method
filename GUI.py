@@ -17,12 +17,17 @@ TODO:
 class GUI:
     def main():
         dpg.create_context()
-        dpg.create_viewport(title="ODE Applications: Euler Method", width=800, height=600, resizable=False)
+        dpg.create_viewport(title="ODE Applications: Euler Method", width=1280, height=720, resizable=False)
 
         # Creates the menu bar of the viewpoint
         with dpg.viewport_menu_bar():
+            with dpg.menu(label="File"):
+                dpg.add_menu_item(label="Export Table as .CSV") #TODO: export table as .csv
+                
             with dpg.menu(label="Help"):
                 dpg.add_menu_item(label="Open README.md") #TODO: open the README
+
+            
 
         # Creates the main window
         with dpg.window(tag="main_window", menubar=True):
@@ -30,7 +35,7 @@ class GUI:
             dpg.add_separator()
 
             # Using table as layout
-            with dpg.table(header_row=False):
+            with dpg.table(header_row=False, borders_innerV=True, policy=dpg.mvTable_SizingStretchProp):
 
                 dpg.add_table_column()
                 dpg.add_table_column()
@@ -40,7 +45,7 @@ class GUI:
                         GUI.inputSection()
 
                     with dpg.table_cell(): # Right Column
-                        dpg.add_text("Here goes the output table")
+                        GUI.solutionTable()
 
             dpg.add_text("Here goes the output graph", indent=300)
                     
@@ -81,5 +86,23 @@ class GUI:
                 dpg.add_input_text(hint="Type a First-Order ODE to Solve...", width=300)
 
             dpg.add_button(label="Calculate", indent=258) #TODO: Add action to the button
+
+    def solutionTable():
+        with dpg.table(borders_outerH=True, borders_innerV=True, borders_innerH=True, borders_outerV=True,
+                       height=156, scrollY=True, freeze_rows=1):
+
+            dpg.add_table_column(label="x_n")
+            dpg.add_table_column(label="Euler Method")
+            dpg.add_table_column(label="Improved Euler Method")
+            dpg.add_table_column(label="Absolute Error")
+            dpg.add_table_column(label="Relative Error")
+
+            # Placeholder content
+            for i in range(0, 10):
+                with dpg.table_row():
+                    for j in range(0, 5):
+                        with dpg.table_cell():
+                            dpg.add_text(f"{i}.0000")
+
 
 GUI.main()
