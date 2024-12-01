@@ -23,7 +23,7 @@ class GUI:
         with dpg.viewport_menu_bar():
             with dpg.menu(label="File"):
                 dpg.add_menu_item(label="Export Table as .CSV") #TODO: export table as .csv
-                
+
             with dpg.menu(label="Help"):
                 dpg.add_menu_item(label="Open README.md") #TODO: open the README
 
@@ -59,7 +59,7 @@ class GUI:
     def inputSection():    
         # Adds the Initial Value section
         with dpg.group():
-            dpg.add_text("Initial Value: ", indent=40)
+            dpg.add_text("Initial Values: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text("x0=")
                 dpg.add_input_float(step=0.5, width=100)
@@ -85,7 +85,7 @@ class GUI:
                 dpg.add_text("y\'=")
                 dpg.add_input_text(hint="Type a First-Order ODE to Solve...", width=300)
 
-            dpg.add_button(label="Calculate", indent=258) #TODO: Add action to the button
+            dpg.add_button(label="Solve", indent=286) #TODO: Add action to the button
 
     def solutionTable():
         with dpg.table(borders_outerH=True, borders_innerV=True, borders_innerH=True, borders_outerV=True,
