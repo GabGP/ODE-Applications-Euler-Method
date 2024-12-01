@@ -29,8 +29,21 @@ class GUI:
             dpg.add_text("Euler Method")
             dpg.add_separator()
 
-            GUI.inputSection()
+            # Using table as layout
+            with dpg.table(header_row=False):
 
+                dpg.add_table_column()
+                dpg.add_table_column()
+
+                with dpg.table_row():
+                    with dpg.table_cell(): # Left Column
+                        GUI.inputSection()
+
+                    with dpg.table_cell(): # Right Column
+                        dpg.add_text("Here goes the output table")
+
+            dpg.add_text("Here goes the output graph", indent=300)
+                    
         dpg.setup_dearpygui()
         dpg.show_viewport()
         dpg.set_primary_window("main_window", True)
@@ -44,10 +57,10 @@ class GUI:
             dpg.add_text("Initial Value: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text("x0=")
-                dpg.add_input_float(tag="x0", step=0.5, width=100)
+                dpg.add_input_float(step=0.5, width=100)
 
                 dpg.add_text("y0=")
-                dpg.add_input_float(tag="y0", step=0.5, width=100)
+                dpg.add_input_float(step=0.5, width=100)
 
             # Adds the Stepsize + Value to Calculate section
             with dpg.group(horizontal=True):
@@ -56,16 +69,16 @@ class GUI:
             
             with dpg.group(horizontal=True):
                 dpg.add_text(" h=")
-                dpg.add_input_float(tag="h", step=0.05, width=100)
+                dpg.add_input_float(step=0.05, width=100)
 
                 dpg.add_text(" x=")
-                dpg.add_input_float(tag="x", step=0.5, width=100)
+                dpg.add_input_float(step=0.5, width=100)
 
             # Adds the Equation section
             dpg.add_text("Equation: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text("y\'=")
-                dpg.add_input_text(tag="equation_input", hint="Type a First-Order ODE to Solve...", width=300)
+                dpg.add_input_text(hint="Type a First-Order ODE to Solve...", width=300)
 
             dpg.add_button(label="Calculate", indent=258) #TODO: Add action to the button
 
