@@ -40,14 +40,13 @@ class GUI:
                 dpg.add_table_column()
                 dpg.add_table_column()
 
-                with dpg.table_row():
+                with dpg.table_row(height=658):
                     with dpg.table_cell(): # Left Column
                         GUI.inputSection()
 
                     with dpg.table_cell(): # Right Column
                         GUI.solutionTable()
-
-            dpg.add_text("Here goes the output graph", indent=300)
+                        dpg.add_text("Here goes the output graph", indent=300)
                     
         dpg.setup_dearpygui()
         dpg.show_viewport()
@@ -57,27 +56,35 @@ class GUI:
 
 
     def inputSection():    
-        # Adds the Initial Value section
         with dpg.group():
+            
+            # Adds the Initial Values section
             dpg.add_text("Initial Values: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text("x0=")
                 dpg.add_input_float(step=0.5, width=100)
 
+            with dpg.group(horizontal=True):
                 dpg.add_text("y0=")
                 dpg.add_input_float(step=0.5, width=100)
 
-            # Adds the Stepsize + Value to Calculate section
-            with dpg.group(horizontal=True):
-                dpg.add_text("Stepsize: ", indent=40)
-                dpg.add_text("Solve for y(x): ", indent=180)
-            
+            dpg.add_text() # Adds whitespace
+
+            # Adds the Stepsize section
+            dpg.add_text("Stepsize: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text(" h=")
                 dpg.add_input_float(step=0.05, width=100)
 
+            dpg.add_text() # Adds whitespace
+
+            # Adds the Solve for y(x) section
+            dpg.add_text("Solve for y(x): ", indent=40)
+            with dpg.group(horizontal=True):
                 dpg.add_text(" x=")
                 dpg.add_input_float(step=0.5, width=100)
+
+            dpg.add_text() # Adds whitespace
 
             # Adds the Equation section
             dpg.add_text("Equation: ", indent=40)
@@ -86,6 +93,7 @@ class GUI:
                 dpg.add_input_text(hint="Type a First-Order ODE to Solve...", width=300)
 
             dpg.add_button(label="Solve", indent=286) #TODO: Add action to the button
+
 
     def solutionTable():
         with dpg.table(borders_outerH=True, borders_innerV=True, borders_innerH=True, borders_outerV=True,
