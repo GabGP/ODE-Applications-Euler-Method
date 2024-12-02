@@ -4,18 +4,27 @@
 #
 class ODE:
     fourDecimals = "{:.4f}"
-    
-    def eulerMethod(y0: float, x: float, stepSize: float):
+    approx_xAxis = []
+    approx_yAxis = []
+    exact_xAxis = []
+    exact_yAxis = []
+
+    def eulerMethod(x0: float, y0: float, x: float, stepSize: float):
+
+        # Resets the axis
+        ODE.approx_xAxis.clear()
+        ODE.approx_yAxis.clear()
 
         if ((x > 0) and (stepSize > 0)):
 
-            n = stepSize
-            while (n < x + stepSize):
+            while (x0 <= x): # Do while initial value of x is less or equal than the goal x
                 y = y0 + stepSize * y0
-                print(ODE.fourDecimals.format(y))
+
+                ODE.approx_xAxis.append(float(ODE.fourDecimals.format(x0)))
+                ODE.approx_yAxis.append(float(ODE.fourDecimals.format(y)))
 
                 y0 = y
-                n = n + stepSize
+                x0 = x0 + stepSize
 
 
     def improvedEulerMethod():
