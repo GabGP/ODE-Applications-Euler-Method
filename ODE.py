@@ -29,3 +29,28 @@ class ODE:
 
     def improvedEulerMethod():
         1
+
+    def exactSolution(selectedEquation, x0: float, x: float, stepSize: float):
+
+        match selectedEquation:
+            case "e^(2y)":
+                return 1
+            
+            case "(x + y - 5)²":
+                return 1
+            
+            case "0.9y - 1.8y²":
+                return 1
+            
+            case "2xy":
+                return 1
+            
+            case "1 + y²":
+                return 1
+            
+            case "xy + sqrt(y)":
+                return 1
+            
+            case _:
+                return print("Select an Equation to Continue")
+            
