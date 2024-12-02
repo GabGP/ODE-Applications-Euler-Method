@@ -129,11 +129,20 @@ class GUI:
     def solutionGraph():
         with dpg.plot(label="y(x) vs. x", height=490, width=928):
 
+            dpg.add_plot_legend()
+
             dpg.add_plot_axis(dpg.mvXAxis, label="x", auto_fit=True)
             dpg.add_plot_axis(dpg.mvYAxis, label="y(x)", auto_fit=True, tag="y_axis")
 
+            dpg.add_line_series(ODE.exact_xAxis, ODE.exact_yAxis, label="Exact Solution", parent="y_axis", tag="exact_graph")
+            dpg.add_line_series(ODE.approx_xAxis, ODE.approx_yAxis, label="Approximate Solution", parent="y_axis", tag="approx_graph")
+
+
+
     def solveButton():
-        print("Clicked \"Solve\"")
-        ODE.eulerMethod(y0=dpg.get_value(GUI.initY), stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
+        print("Clicked \"Solve\"\n") # TODO: Remove at the end
+        ODE.eulerMethod(x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
+
+        dpg.set_value("approx_graph", [ODE.approx_xAxis, ODE.approx_yAxis])
 
 GUI.mainWindow()
