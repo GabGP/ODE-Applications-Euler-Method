@@ -27,8 +27,6 @@ class GUI:
             with dpg.menu(label="Help"):
                 dpg.add_menu_item(label="Open README.md") #TODO: open the README
 
-            
-
         # Creates the main window
         with dpg.window(tag="main_window", menubar=True):
             dpg.add_text("Euler Method")
@@ -56,7 +54,7 @@ class GUI:
 
                             with dpg.table_row(): # Down-Right Row
                                 with dpg.table_cell(): 
-                                    dpg.add_text("Here goes the output graph", indent=300)
+                                    GUI.solutionGraph()
 
         dpg.setup_dearpygui()
         dpg.show_viewport()
@@ -120,10 +118,12 @@ class GUI:
                 with dpg.table_row():
                     for j in range(0, 5):
                         with dpg.table_cell():
-                            dpg.add_text(f"{i}.0000")
+                            dpg.add_text()
 
     def solutionGraph():
-        1
+        with dpg.plot(label="y(x) vs. x", height=490, width=928):
 
+            dpg.add_plot_axis(dpg.mvXAxis, label="x", auto_fit=True)
+            dpg.add_plot_axis(dpg.mvYAxis, label="y(x)", auto_fit=True, tag="y_axis")
 
 GUI.main()
