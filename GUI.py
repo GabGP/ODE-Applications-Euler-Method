@@ -21,7 +21,8 @@ class GUI:
     stepSize: float # Stepsize h
     goalX: float # X in y(x)
     equations = ["e^(2y)", "(x + y - 5)²", "0.9y - 1.8y²", "2xy", "1 + y²", "xy + sqrt(y)"]
-    selectedEquation : str
+    selectedEquation: str
+    rowAmmount = 0
 
     def mainWindow():
         dpg.create_context()
@@ -113,20 +114,13 @@ class GUI:
 
     def solutionTable():
         with dpg.table(borders_outerH=True, borders_innerV=True, borders_innerH=True, borders_outerV=True,
-                       height=156, scrollY=True, freeze_rows=1):
+                       height=156, scrollY=True, freeze_rows=1, tag="solution_table"):
 
-            dpg.add_table_column(label="x_n")
-            dpg.add_table_column(label="Euler Method")
-            dpg.add_table_column(label="Improved Euler Method")
-            dpg.add_table_column(label="Absolute Error")
-            dpg.add_table_column(label="Relative Error")
-
-            # Placeholder content
-            for i in range(0, 10):
-                with dpg.table_row():
-                    for j in range(0, 5):
-                        with dpg.table_cell():
-                            dpg.add_text()
+            dpg.add_table_column(label="x_n", tag="column1")
+            dpg.add_table_column(label="Euler Method", tag="column2")
+            dpg.add_table_column(label="Improved Euler Method", tag="column3")
+            dpg.add_table_column(label="Absolute Error", tag="column4")
+            dpg.add_table_column(label="Relative Error", tag="column5")
 
 
     def solutionGraph():
@@ -148,5 +142,19 @@ class GUI:
 
         ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
                           stepSize=dpg.get_value(GUI.stepSize))
+        dpg.set_value("exact_graph", [ODE.exact_xAxis, ODE.exact_yAxis])
+
+        # Clearing table
+        for i in range(0, GUI.rowAmmount):
+            dpg.delete_item(f"row{i}")
+
+        GUI.rowAmmount = len(ODE.approx_xAxis)
+
+        # Updating table
+        for i in range(0, GUI.rowAmmount):
+            with dpg.table_row(tag=f"row{i}", parent="solution_table"):
+                for j in range(0, 5):
+                    with dpg.table_cell():
+                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
 
 GUI.mainWindow()
