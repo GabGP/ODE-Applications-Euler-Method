@@ -1,4 +1,5 @@
 import dearpygui.dearpygui as dpg
+from ODE import *
 
 """
 TODO:
@@ -15,7 +16,7 @@ TODO:
 """
 
 class GUI:
-    def main():
+    def mainWindow():
         dpg.create_context()
         dpg.create_viewport(title="ODE Applications: Euler Method", width=1280, height=720, resizable=False)
 
@@ -100,7 +101,7 @@ class GUI:
                 dpg.add_text("y\'=")
                 dpg.add_input_text(hint="Type a First-Order ODE to Solve...", width=300)
 
-            dpg.add_button(label="Solve", indent=286) #TODO: Add action to the button
+            dpg.add_button(label="Solve", indent=286, callback=GUI.solve) #TODO: Add action to the button
 
 
     def solutionTable():
@@ -126,4 +127,8 @@ class GUI:
             dpg.add_plot_axis(dpg.mvXAxis, label="x", auto_fit=True)
             dpg.add_plot_axis(dpg.mvYAxis, label="y(x)", auto_fit=True, tag="y_axis")
 
-GUI.main()
+    def solve():
+        print("Clicked \"Solve\"")
+        ODE.eulerMethod(x0=0, y0=1, x=4, stepSize=1)
+
+GUI.mainWindow()
