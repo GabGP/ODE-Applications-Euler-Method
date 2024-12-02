@@ -16,6 +16,11 @@ TODO:
 """
 
 class GUI:
+    initX: float # Initial X (x0)
+    initY: float # Initial Y (y0)
+    stepSize: float # Stepsize h
+    goalX: float # X in y(x)
+
     def mainWindow():
         dpg.create_context()
         dpg.create_viewport(title="ODE Applications: Euler Method", width=1280, height=720, resizable=False)
@@ -71,11 +76,11 @@ class GUI:
             dpg.add_text("Initial Values: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text("x0=")
-                dpg.add_input_float(step=0.5, width=100)
+                GUI.initX = dpg.add_input_float(step=0.5, width=100)
 
             with dpg.group(horizontal=True):
                 dpg.add_text("y0=")
-                dpg.add_input_float(step=0.5, width=100)
+                GUI.initY = dpg.add_input_float(step=0.5, width=100)
 
             dpg.add_text() # Adds whitespace
 
@@ -83,7 +88,7 @@ class GUI:
             dpg.add_text("Stepsize: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text(" h=")
-                dpg.add_input_float(step=0.05, width=100)
+                GUI.stepSize = dpg.add_input_float(step=0.05, width=100)
 
             dpg.add_text() # Adds whitespace
 
@@ -91,7 +96,7 @@ class GUI:
             dpg.add_text("Solve for y(x): ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text(" x=")
-                dpg.add_input_float(step=0.5, width=100)
+                GUI.goalX = dpg.add_input_float(step=0.5, width=100)
 
             dpg.add_text() # Adds whitespace
 
@@ -101,7 +106,7 @@ class GUI:
                 dpg.add_text("y\'=")
                 dpg.add_input_text(hint="Type a First-Order ODE to Solve...", width=300)
 
-            dpg.add_button(label="Solve", indent=286, callback=GUI.solve) #TODO: Add action to the button
+            dpg.add_button(label="Solve", indent=286, callback=GUI.solveButton)
 
 
     def solutionTable():
@@ -127,8 +132,8 @@ class GUI:
             dpg.add_plot_axis(dpg.mvXAxis, label="x", auto_fit=True)
             dpg.add_plot_axis(dpg.mvYAxis, label="y(x)", auto_fit=True, tag="y_axis")
 
-    def solve():
+    def solveButton():
         print("Clicked \"Solve\"")
-        ODE.eulerMethod(x0=0, y0=1, x=4, stepSize=1)
+        ODE.eulerMethod(y0=dpg.get_value(GUI.initY), stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
 
 GUI.mainWindow()
