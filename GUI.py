@@ -45,9 +45,19 @@ class GUI:
                         GUI.inputSection()
 
                     with dpg.table_cell(): # Right Column
-                        GUI.solutionTable()
-                        dpg.add_text("Here goes the output graph", indent=300)
-                    
+
+                        with dpg.table(header_row=False):
+
+                            dpg.add_table_column()
+
+                            with dpg.table_row(): # Upper-Right Row
+                                with dpg.table_cell(): 
+                                    GUI.solutionTable()
+
+                            with dpg.table_row(): # Down-Right Row
+                                with dpg.table_cell(): 
+                                    dpg.add_text("Here goes the output graph", indent=300)
+
         dpg.setup_dearpygui()
         dpg.show_viewport()
         dpg.set_primary_window("main_window", True)
@@ -111,6 +121,9 @@ class GUI:
                     for j in range(0, 5):
                         with dpg.table_cell():
                             dpg.add_text(f"{i}.0000")
+
+    def solutionGraph():
+        1
 
 
 GUI.main()
