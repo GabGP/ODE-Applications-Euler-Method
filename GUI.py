@@ -20,6 +20,7 @@ class GUI:
     initY: float # Initial Y (y0)
     stepSize: float # Stepsize h
     goalX: float # X in y(x)
+    equations = ["e^(2y)", "(x + y - 5)²", "0.9y - 1.8y²", "2xy", "1 + y²", "xy + sqrt(y)"]
 
     def mainWindow():
         dpg.create_context()
@@ -101,10 +102,10 @@ class GUI:
             dpg.add_text() # Adds whitespace
 
             # Adds the Equation section
-            dpg.add_text("Equation: ", indent=40)
+            dpg.add_text("Select a First-Order ODE to Solve...", indent=40)
             with dpg.group(horizontal=True):
-                dpg.add_text("y\'=")
-                dpg.add_input_text(hint="Type a First-Order ODE to Solve...", width=300)
+                dpg.add_text("y\'=")                
+                dpg.add_combo(items=GUI.equations, width=300)
 
             dpg.add_button(label="Solve", indent=286, callback=GUI.solveButton)
 
