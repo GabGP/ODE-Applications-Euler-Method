@@ -113,6 +113,7 @@ class GUI:
 
 
     def solutionTable():
+        # Creates the solution table
         with dpg.table(borders_outerH=True, borders_innerV=True, borders_innerH=True, borders_outerV=True,
                        height=156, scrollY=True, freeze_rows=1, tag="solution_table"):
 
@@ -123,7 +124,27 @@ class GUI:
             dpg.add_table_column(label="Relative Error", tag="column5")
 
 
+    def clearTable():
+        # Clearing table
+        for i in range(0, GUI.rowAmmount):
+            dpg.delete_item(f"row{i}")
+
+
+    def updateTable():
+        # Always clear the table before updating it
+        GUI.clearTable()
+
+        # Updating table
+        GUI.rowAmmount = len(ODE.approx_xAxis)
+        for i in range(0, GUI.rowAmmount):
+            with dpg.table_row(tag=f"row{i}", parent="solution_table"):
+                for j in range(0, 5):
+                    with dpg.table_cell():
+                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
+
+
     def solutionGraph():
+        # creates the solution graph
         with dpg.plot(label="y(x) vs. x", height=490, width=928):
 
             dpg.add_plot_legend()
@@ -134,27 +155,18 @@ class GUI:
             dpg.add_line_series(ODE.exact_xAxis, ODE.exact_yAxis, label="Exact Solution", parent="y_axis", tag="exact_graph")
             dpg.add_line_series(ODE.approx_xAxis, ODE.approx_yAxis, label="Approximate Solution", parent="y_axis", tag="approx_graph")
 
+    def updateGraph():
+        dpg.set_value("approx_graph", [ODE.approx_xAxis, ODE.approx_yAxis])
+        dpg.set_value("exact_graph", [ODE.exact_xAxis, ODE.exact_yAxis])
 
     def solveButton():
         print("Clicked \"Solve\"\n") # TODO: Remove at the end
         ODE.eulerMethod(x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
-        dpg.set_value("approx_graph", [ODE.approx_xAxis, ODE.approx_yAxis])
 
         ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
-                          stepSize=dpg.get_value(GUI.stepSize))
-        dpg.set_value("exact_graph", [ODE.exact_xAxis, ODE.exact_yAxis])
-
-        # Clearing table
-        for i in range(0, GUI.rowAmmount):
-            dpg.delete_item(f"row{i}")
-
-        GUI.rowAmmount = len(ODE.approx_xAxis)
-
-        # Updating table
-        for i in range(0, GUI.rowAmmount):
-            with dpg.table_row(tag=f"row{i}", parent="solution_table"):
-                for j in range(0, 5):
-                    with dpg.table_cell():
-                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
+                                stepSize=dpg.get_value(GUI.stepSize))
+        
+        GUI.updateGraph()
+        GUI.updateTable()
 
 GUI.mainWindow()
