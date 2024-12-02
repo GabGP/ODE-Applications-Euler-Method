@@ -3,13 +3,19 @@
 # Ordinary Differential Equation
 #
 class ODE:
+    fourDecimals = "{:.4f}"
     
-    def eulerMethod(x0: int, y0: int, x: int, stepSize: int):
+    def eulerMethod(y0: float, x: float, stepSize: float):
 
-        for n in range(stepSize, x + stepSize):
-            y = y0 + stepSize * y0
-            print(y)
-            y0 = y
+        if ((x > 0) and (stepSize > 0)):
+
+            n = stepSize
+            while (n < x + stepSize):
+                y = y0 + stepSize * y0
+                print(ODE.fourDecimals.format(y))
+
+                y0 = y
+                n = n + stepSize
 
 
     def improvedEulerMethod():
