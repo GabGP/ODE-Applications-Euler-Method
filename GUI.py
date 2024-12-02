@@ -21,6 +21,7 @@ class GUI:
     stepSize: float # Stepsize h
     goalX: float # X in y(x)
     equations = ["e^(2y)", "(x + y - 5)²", "0.9y - 1.8y²", "2xy", "1 + y²", "xy + sqrt(y)"]
+    selectedEquation : str
 
     def mainWindow():
         dpg.create_context()
@@ -101,11 +102,11 @@ class GUI:
 
             dpg.add_text() # Adds whitespace
 
-            # Adds the Equation section
+            # Adds the Equation Selection section
             dpg.add_text("Select a First-Order ODE to Solve...", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text("y\'=")                
-                dpg.add_combo(items=GUI.equations, width=300)
+                GUI.selectedEquation = dpg.add_combo(items=GUI.equations, width=300)
 
             dpg.add_button(label="Solve", indent=286, callback=GUI.solveButton)
 
@@ -127,6 +128,7 @@ class GUI:
                         with dpg.table_cell():
                             dpg.add_text()
 
+
     def solutionGraph():
         with dpg.plot(label="y(x) vs. x", height=490, width=928):
 
@@ -139,11 +141,12 @@ class GUI:
             dpg.add_line_series(ODE.approx_xAxis, ODE.approx_yAxis, label="Approximate Solution", parent="y_axis", tag="approx_graph")
 
 
-
     def solveButton():
         print("Clicked \"Solve\"\n") # TODO: Remove at the end
         ODE.eulerMethod(x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
-
         dpg.set_value("approx_graph", [ODE.approx_xAxis, ODE.approx_yAxis])
+
+        ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
+                          stepSize=dpg.get_value(GUI.stepSize))
 
 GUI.mainWindow()
