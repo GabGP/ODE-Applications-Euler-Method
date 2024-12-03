@@ -167,16 +167,18 @@ class GUI:
         print("Clicked \"Solve\"\n") # TODO: Remove at the end
 
         # Checks if there's a selected equation
-        if (dpg.get_value(GUI.selectedEquation) == ""):
+        if (dpg.get_value(GUI.selectedEquation) != ""):
+            ODE.eulerMethod(x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
+
+            ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
+                                    stepSize=dpg.get_value(GUI.stepSize))
+            
+            GUI.updateGraph()
+            GUI.updateTable()
+
+        else:
             GUI.popupWindow("Select an Equation to Continue")
 
-        ODE.eulerMethod(x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
-
-        ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
-                                stepSize=dpg.get_value(GUI.stepSize))
-        
-        GUI.updateGraph()
-        GUI.updateTable()
 
     def popupWindow(message: str):
 
