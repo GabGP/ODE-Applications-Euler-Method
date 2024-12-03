@@ -41,35 +41,39 @@ class GUI:
             dpg.add_text("Euler Method")
             dpg.add_separator()
 
-            # Using table as layout
-            with dpg.table(header_row=False, borders_innerV=True, policy=dpg.mvTable_SizingStretchProp):
-
-                dpg.add_table_column()
-                dpg.add_table_column()
-
-                with dpg.table_row(height=658):
-                    with dpg.table_cell(): # Left Column
-                        GUI.inputSection()
-
-                    with dpg.table_cell(): # Right Column
-
-                        with dpg.table(header_row=False):
-
-                            dpg.add_table_column()
-
-                            with dpg.table_row(): # Upper-Right Row
-                                with dpg.table_cell(): 
-                                    GUI.solutionTable()
-
-                            with dpg.table_row(): # Down-Right Row
-                                with dpg.table_cell(): 
-                                    GUI.solutionGraph()
+        GUI.layout()
 
         dpg.setup_dearpygui()
         dpg.show_viewport()
         dpg.set_primary_window("main_window", True)
         dpg.start_dearpygui()
         dpg.destroy_context()
+
+
+    def layout():
+        # Using table as layout
+        with dpg.table(header_row=False, borders_innerV=True, policy=dpg.mvTable_SizingStretchProp, parent="main_window"):
+
+            dpg.add_table_column()
+            dpg.add_table_column()
+
+            with dpg.table_row(height=658):
+                with dpg.table_cell(): # Left Column
+                    GUI.inputSection()
+
+                with dpg.table_cell(): # Right Column
+
+                    with dpg.table(header_row=False):
+
+                        dpg.add_table_column()
+
+                        with dpg.table_row(): # Upper-Right Row
+                            with dpg.table_cell(): 
+                                GUI.solutionTable()
+
+                        with dpg.table_row(): # Down-Right Row
+                            with dpg.table_cell(): 
+                                GUI.solutionGraph()
 
 
     def inputSection():    
@@ -161,6 +165,11 @@ class GUI:
 
     def solveButton():
         print("Clicked \"Solve\"\n") # TODO: Remove at the end
+
+        # Checks if there's a selected equation
+        if (dpg.get_value(GUI.selectedEquation) == ""):
+            GUI.popupWindow("Select an Equation to Continue")
+
         ODE.eulerMethod(x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
 
         ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
@@ -169,4 +178,14 @@ class GUI:
         GUI.updateGraph()
         GUI.updateTable()
 
+    def popupWindow(message: str):
+
+        windowCenter = (len(message)/2)*6
+
+        dpg.add_window(popup=True, modal=True, no_resize=True, no_title_bar=True, tag="popup_window")
+        dpg.add_text(parent="popup_window")
+        dpg.add_text(message, parent="popup_window")
+        dpg.add_button(label="OK", indent=windowCenter, callback=lambda: dpg.delete_item("popup_window"), parent="popup_window")
+        
+        
 GUI.mainWindow()
