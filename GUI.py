@@ -142,8 +142,25 @@ class GUI:
         GUI.rowAmmount = len(ODE.approx_xAxis)
         for i in range(0, GUI.rowAmmount):
             with dpg.table_row(tag=f"row{i}", parent="solution_table"):
-                for j in range(0, 5):
-                    with dpg.table_cell():
+
+                # x_n
+                with dpg.table_cell():
+                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i]))
+                
+                # Euler Method
+                with dpg.table_cell():
+                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_yAxis[i]))
+
+                # Improved Euler Method
+                with dpg.table_cell():
+                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
+
+                # Absolute Error
+                with dpg.table_cell():
+                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
+
+                # Relative Error
+                with dpg.table_cell():
                         dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
 
 
