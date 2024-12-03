@@ -22,6 +22,7 @@ class GUI:
     goalX: float # X in y(x)
     equations = ["e^(2y)", "(x + y - 5)²", "0.9y - 1.8y²", "2xy", "1 + y²", "xy + sqrt(y)"]
     selectedEquation: str
+    radioButton: str
     rowAmmount = 0
 
     def mainWindow():
@@ -107,6 +108,12 @@ class GUI:
 
             dpg.add_text() # Adds whitespace
 
+            # Select Method section
+            with dpg.group(horizontal=True):
+                GUI.radioButton = dpg.add_radio_button(["Euler Method", "Improved Euler Method"], callback=GUI.radioButtonAction)
+
+            dpg.add_text() # Adds whitespace
+
             # Adds the Equation Selection section
             dpg.add_text("Select a First-Order ODE to Solve...", indent=40)
             with dpg.group(horizontal=True):
@@ -121,9 +128,9 @@ class GUI:
         with dpg.table(borders_outerH=True, borders_innerV=True, borders_innerH=True, borders_outerV=True,
                        height=156, scrollY=True, freeze_rows=1, tag="solution_table"):
 
-            dpg.add_table_column(label="x_n", tag="column1")
-            dpg.add_table_column(label="Euler Method", tag="column2")
-            dpg.add_table_column(label="Improved Euler Method", tag="column3")
+            dpg.add_table_column(label="x", tag="column1")
+            dpg.add_table_column(label="y (Exact Solution)", tag="column2")
+            dpg.add_table_column(label="y (Euler Method)", tag="column3")
             dpg.add_table_column(label="Absolute Error", tag="column4")
             dpg.add_table_column(label="Relative Error", tag="column5")
 
@@ -143,17 +150,17 @@ class GUI:
         for i in range(0, GUI.rowAmmount):
             with dpg.table_row(tag=f"row{i}", parent="solution_table"):
 
-                # x_n
+                # x
                 with dpg.table_cell():
                         dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i]))
+
+                # Exact Solution
+                with dpg.table_cell():
+                    dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
                 
                 # Euler Method
                 with dpg.table_cell():
                         dpg.add_text(ODE.fourDecimals.format(ODE.approx_yAxis[i]))
-
-                # Improved Euler Method
-                with dpg.table_cell():
-                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
 
                 # Absolute Error
                 with dpg.table_cell():
@@ -176,9 +183,11 @@ class GUI:
             dpg.add_line_series(ODE.exact_xAxis, ODE.exact_yAxis, label="Exact Solution", parent="y_axis", tag="exact_graph")
             dpg.add_line_series(ODE.approx_xAxis, ODE.approx_yAxis, label="Approximate Solution", parent="y_axis", tag="approx_graph")
 
+
     def updateGraph():
         dpg.set_value("approx_graph", [ODE.approx_xAxis, ODE.approx_yAxis])
         dpg.set_value("exact_graph", [ODE.exact_xAxis, ODE.exact_yAxis])
+
 
     def solveButton():
         print("Clicked \"Solve\"\n") # TODO: Remove at the end
@@ -195,6 +204,10 @@ class GUI:
 
         else:
             GUI.popupWindow("Select an Equation to Continue")
+
+
+    def radioButtonAction():
+        print(f"Radio Button Action: {dpg.get_value(GUI.radioButton)}")
 
 
     def popupWindow(message: str):
