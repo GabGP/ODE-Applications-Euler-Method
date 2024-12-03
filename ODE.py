@@ -26,7 +26,12 @@ class ODE:
         ODE.approx_xAxis.clear()
         ODE.approx_yAxis.clear()
 
-        if ((x >= 0.5) and (stepSize >= 0.05)):
+        if ((x >= 0.01) and (stepSize >= 0.01)):
+
+            # Initial Values (Step 0)
+            ODE.approx_xAxis.append(x0)
+            ODE.approx_yAxis.append(y0)
+            x0 = float(ODE.fourDecimals.format(x0 + stepSize)) # Next step
 
             while (x0 <= x): # Do while initial value of x is less or equal than the goal x
                 y = y0 + stepSize * y0
@@ -35,7 +40,7 @@ class ODE:
                 ODE.approx_yAxis.append(y)
 
                 y0 = y
-                x0 = x0 + stepSize
+                x0 = float(ODE.fourDecimals.format(x0 + stepSize)) # Always format to 4 decimals
 
 
     def improvedEulerMethod(x0: float, y0: float, x: float, stepSize: float):
