@@ -110,7 +110,8 @@ class GUI:
 
             # Select Method section
             with dpg.group(horizontal=True):
-                GUI.radioButton = dpg.add_radio_button(["Euler Method", "Improved Euler Method"], callback=GUI.radioButtonAction)
+                GUI.radioButton = dpg.add_radio_button(["Euler Method", "Improved Euler Method"], callback=GUI.radioButtonAction, 
+                                                       default_value="Euler Method")
 
             dpg.add_text() # Adds whitespace
 
@@ -147,28 +148,37 @@ class GUI:
 
         # Updating table
         GUI.rowAmmount = len(ODE.approx_xAxis)
-        for i in range(0, GUI.rowAmmount):
-            with dpg.table_row(tag=f"row{i}", parent="solution_table"):
+        for rowNumber in range(0, GUI.rowAmmount):
+            with dpg.table_row(tag=f"row{rowNumber}", parent="solution_table"):
 
-                # x
+                # Column: x
                 with dpg.table_cell():
-                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i]))
+                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[rowNumber]))
 
-                # Exact Solution
+                # Column: Exact Solution
                 with dpg.table_cell():
-                    dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
+                    dpg.add_text("Exact Solution") # Placeholder
                 
-                # Euler Method
+                # Column: Euler Method/Improved Euler Method
                 with dpg.table_cell():
-                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_yAxis[i]))
+                        if (dpg.get_value(GUI.radioButton) == "Euler Method"):
+                            dpg.add_text(ODE.fourDecimals.format(ODE.approx_yAxis[rowNumber]))
+                        else:
+                            dpg.add_text("Improved Euler Method") # Placeholder
 
-                # Absolute Error
+                # Column: Absolute Error
                 with dpg.table_cell():
-                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
+                        if (dpg.get_value(GUI.radioButton) == "Euler Method"):
+                            dpg.add_text("Euler Method") # Placeholder
+                        else:
+                            dpg.add_text("Improved Euler Method") # Placeholder
 
-                # Relative Error
+                # Column: Relative Error
                 with dpg.table_cell():
-                        dpg.add_text(ODE.fourDecimals.format(ODE.approx_xAxis[i])) # Placeholder
+                        if (dpg.get_value(GUI.radioButton) == "Euler Method"):
+                            dpg.add_text("Euler Method") # Placeholder
+                        else:
+                            dpg.add_text("Improved Euler Method") # Placeholder
 
 
     def solutionGraph():
@@ -189,8 +199,28 @@ class GUI:
         dpg.set_value("exact_graph", [ODE.exact_xAxis, ODE.exact_yAxis])
 
 
+    def radioButtonAction():
+        print(f"Radio Button Action: {dpg.get_value(GUI.radioButton)}") # TODO: Remove at the end
+
+        match dpg.get_value(GUI.radioButton):
+
+            #if the radio button selection matches the case, then does what's in there
+            case "Euler Method":
+                GUI.clearTable()
+                dpg.configure_item("column3", label="y (Euler Method)") # Changes the name of the third column
+                GUI.updateTable()
+                GUI.updateGraph()
+            
+            case "Improved Euler Method":
+                GUI.clearTable()
+                dpg.configure_item("column3", label="y (Improved Euler Method)") # Changes the name of the third column
+                GUI.updateTable()
+                GUI.updateGraph()
+            
+    
     def solveButton():
         print("Clicked \"Solve\"\n") # TODO: Remove at the end
+        print(dpg.get_value(GUI.radioButton))
 
         # Checks if there's a selected equation
         if (dpg.get_value(GUI.selectedEquation) != ""):
@@ -204,10 +234,6 @@ class GUI:
 
         else:
             GUI.popupWindow("Select an Equation to Continue")
-
-
-    def radioButtonAction():
-        print(f"Radio Button Action: {dpg.get_value(GUI.radioButton)}")
 
 
     def popupWindow(message: str):
