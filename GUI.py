@@ -84,11 +84,11 @@ class GUI:
             dpg.add_text("Initial Values: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text("x0=")
-                GUI.initX = dpg.add_input_float(step=0.5, width=100)
+                GUI.initX = dpg.add_input_float(step=0.5, width=100, format="%.4f", min_clamped=True, min_value=0.0000)
 
             with dpg.group(horizontal=True):
                 dpg.add_text("y0=")
-                GUI.initY = dpg.add_input_float(step=0.5, width=100)
+                GUI.initY = dpg.add_input_float(step=0.5, width=100, format="%.4f", min_clamped=True, min_value=0.0000)
 
             dpg.add_text() # Adds whitespace
 
@@ -96,7 +96,7 @@ class GUI:
             dpg.add_text("Stepsize: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text(" h=")
-                GUI.stepSize = dpg.add_input_float(step=0.05, width=100)
+                GUI.stepSize = dpg.add_input_float(step=0.05, width=100, format="%.4f", min_clamped=True, min_value=0.0000)
 
             dpg.add_text() # Adds whitespace
 
@@ -104,7 +104,7 @@ class GUI:
             dpg.add_text("Solve for y(x): ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text(" x=")
-                GUI.goalX = dpg.add_input_float(step=0.5, width=100)
+                GUI.goalX = dpg.add_input_float(step=0.5, width=100, format="%.4f", min_clamped=True, min_value=0.0000)
 
             dpg.add_text() # Adds whitespace
 
