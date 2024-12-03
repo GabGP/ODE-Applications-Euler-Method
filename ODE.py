@@ -4,8 +4,13 @@
 #
 class ODE:
     fourDecimals = "{:.4f}"
+
     approx_xAxis = []
     approx_yAxis = []
+
+    improved_approx_xAxis = []
+    improved_approx_yAxis = []
+
     exact_xAxis = []
     exact_yAxis = []
 
@@ -33,10 +38,34 @@ class ODE:
                 x0 = x0 + stepSize
 
 
-    def improvedEulerMethod():
-        1
+    def improvedEulerMethod(x0: float, y0: float, x: float, stepSize: float):
+        # formats the arguments to 4 decimals before using them
+        x0 = float(ODE.fourDecimals.format(x0))
+        y0 = float(ODE.fourDecimals.format(y0))
+        x = float(ODE.fourDecimals.format(x))
+        stepSize = float(ODE.fourDecimals.format(stepSize))
+
+        # Resets the axis
+        ODE.improved_approx_xAxis.clear()
+        ODE.improved_approx_yAxis.clear()
+
+        if ((x >= 0.5) and (stepSize >= 0.05)):
+
+            while (x0 <= x): # Do while initial value of x is less or equal than the goal x
+                # Here goes the improved euler method
+
+                ODE.improved_approx_xAxis.append(x0)
+                ODE.improved_approx_yAxis.append(y)
+
+                y0 = y
+                x0 = x0 + stepSize
+
 
     def exactSolution(selectedEquation, x0: float, x: float, stepSize: float):
+        # formats the arguments to 4 decimals before using them
+        x0 = float(ODE.fourDecimals.format(x0))
+        x = float(ODE.fourDecimals.format(x))
+        stepSize = float(ODE.fourDecimals.format(stepSize))
 
         match selectedEquation:
             case "e^(2y)":
