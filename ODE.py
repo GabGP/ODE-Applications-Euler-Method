@@ -44,10 +44,8 @@ class ODE:
                 y0 = y
                 x0 = float(ODE.fourDecimals.format(x0 + stepSize)) # Always format to 4 decimals
 
-                print(y0)
 
-
-    def improvedEulerMethod(x0: float, y0: float, x: float, stepSize: float):
+    def improvedEulerMethod(selectedEquation, x0: float, y0: float, x: float, stepSize: float):
         # formats the arguments to 4 decimals before using them
         x0 = float(ODE.fourDecimals.format(x0))
         y0 = float(ODE.fourDecimals.format(y0))
@@ -58,16 +56,23 @@ class ODE:
         ODE.improved_approx_xAxis.clear()
         ODE.improved_approx_yAxis.clear()
 
-        if ((x >= 0.5) and (stepSize >= 0.05)):
+        if ((x >= 0.01) and (stepSize >= 0.01)):
+
+            # Initial Values (Step 0)
+            ODE.improved_approx_xAxis.append(x0)
+            ODE.improved_approx_yAxis.append(y0)
+            x0 = float(ODE.fourDecimals.format(x0 + stepSize)) # Next step
 
             while (x0 <= x): # Do while initial value of x is less or equal than the goal x
-                # Here goes the improved euler method
+                k1 = ODE.function(selectedEquation, x0, y0)
+                k2 = ODE.function(selectedEquation, x0 + stepSize, y0 + stepSize * k1)
+                y = y0 + (stepSize / 2) * (k1 + k2)
 
                 ODE.improved_approx_xAxis.append(x0)
                 ODE.improved_approx_yAxis.append(y)
 
                 y0 = y
-                x0 = x0 + stepSize
+                x0 = float(ODE.fourDecimals.format(x0 + stepSize)) # Always format to 4 decimals
 
 
     def exactSolution(selectedEquation, x0: float, x: float, stepSize: float):
