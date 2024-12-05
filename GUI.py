@@ -39,10 +39,14 @@ class GUI:
 
         # Creates the main window
         with dpg.window(tag="main_window", menubar=True):
-            dpg.add_text("Euler Method")
+
+            # Select Method section
+            GUI.radioButton = dpg.add_radio_button(["Euler Method", "Improved Euler Method"], callback=GUI.radioButtonAction, 
+                                                       default_value="Euler Method", horizontal=True)
+           
             dpg.add_separator()
 
-        GUI.layout()
+            GUI.layout()
 
         dpg.setup_dearpygui()
         dpg.show_viewport()
@@ -108,20 +112,13 @@ class GUI:
 
             dpg.add_text() # Adds whitespace
 
-            # Select Method section
-            with dpg.group(horizontal=True):
-                GUI.radioButton = dpg.add_radio_button(["Euler Method", "Improved Euler Method"], callback=GUI.radioButtonAction, 
-                                                       default_value="Euler Method")
-
-            dpg.add_text() # Adds whitespace
-
             # Adds the Equation Selection section
-            dpg.add_text("Select a First-Order ODE to Solve...", indent=40)
+            dpg.add_text("Select a First-Order ODE...", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text("y\'=")                
                 GUI.selectedEquation = dpg.add_combo(items=GUI.equations, width=300)
 
-            dpg.add_button(label="Solve", indent=286, callback=GUI.solveButton)
+            dpg.add_button(label="Approximate", indent=244, callback=GUI.solveButton)
 
 
     def solutionTable():
@@ -219,7 +216,7 @@ class GUI:
             
     
     def solveButton():
-        print("Clicked \"Solve\"\n") # TODO: Remove at the end
+        print("Clicked \"Approximate\"\n") # TODO: Remove at the end
         print(dpg.get_value(GUI.radioButton))
 
         # Checks if there's a selected equation
@@ -233,7 +230,7 @@ class GUI:
             GUI.updateTable()
 
         else:
-            GUI.popupWindow("Select an Equation to Continue")
+            GUI.popupWindow("Select an Equation to Approximate")
 
 
     def popupWindow(message: str):
