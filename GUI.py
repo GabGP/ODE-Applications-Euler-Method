@@ -118,7 +118,7 @@ class GUI:
                 dpg.add_text("y\'=")                
                 GUI.selectedEquation = dpg.add_combo(items=GUI.equations, width=300)
 
-            dpg.add_button(label="Approximate", indent=244, callback=GUI.solveButton)
+            dpg.add_button(label="Approximate", indent=244, callback=GUI.approximateButton)
 
 
     def solutionTable():
@@ -154,7 +154,7 @@ class GUI:
 
                 # Column: Exact Solution
                 with dpg.table_cell():
-                    dpg.add_text("Exact Solution") # Placeholder
+                    dpg.add_text(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber]))
                 
                 # Column: Euler Method/Improved Euler Method
                 with dpg.table_cell():
@@ -215,16 +215,17 @@ class GUI:
                 GUI.updateGraph()
             
     
-    def solveButton():
-        print("Clicked \"Approximate\"\n") # TODO: Remove at the end
+    def approximateButton():
+        print("Clicked \"Approximate\"") # TODO: Remove at the end
         print(dpg.get_value(GUI.radioButton))
 
         # Checks if there's a selected equation
         if (dpg.get_value(GUI.selectedEquation) != ""):
-            ODE.eulerMethod(x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
+            ODE.eulerMethod(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
+                            stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
 
             ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
-                                    stepSize=dpg.get_value(GUI.stepSize))
+                            stepSize=dpg.get_value(GUI.stepSize))
             
             GUI.updateGraph()
             GUI.updateTable()
