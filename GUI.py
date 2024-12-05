@@ -242,8 +242,8 @@ class GUI:
             GUI.popupWindow(" Select an equation to approximate ")
             return # Exit
 
-        ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
-                          stepSize=dpg.get_value(GUI.stepSize))
+        ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
+                        stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
         
         ODE.eulerMethod(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
                         stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))

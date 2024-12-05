@@ -75,25 +75,27 @@ class ODE:
                 x0 = float(ODE.fourDecimals.format(x0 + stepSize)) # Always format to 4 decimals
 
 
-    def exactSolution(selectedEquation, x0: float, x: float, stepSize: float):
+    def exactSolution(selectedEquation, x0: float, y0: float, x: float, stepSize: float):
         # formats the arguments to 4 decimals before using them
         x0 = float(ODE.fourDecimals.format(x0))
+        y0 = float(ODE.fourDecimals.format(y0))
         x = float(ODE.fourDecimals.format(x))
         stepSize = float(ODE.fourDecimals.format(stepSize))
-
+        
         # Resets the axis
         ODE.exact_xAxis.clear()
         ODE.exact_yAxis.clear()
 
         if ((x >= 0.01) and (stepSize >= 0.01)):
 
-            while (x0 <= x): # Do while initial value of x is less or equal than the goal x
-                y = ODE.exactFunction(selectedEquation, x)
+            x_n = x0
+            while (x_n <= x): # Do while initial value of x is less or equal than the goal x
+                y = ODE.exactFunction(selectedEquation, x0, y0, x_n)
 
-                ODE.exact_xAxis.append(x0)
+                ODE.exact_xAxis.append(x_n)
                 ODE.exact_yAxis.append(y)
 
-                x0 = float(ODE.fourDecimals.format(x0 + stepSize)) # Always format to 4 decimals
+                x_n = float(ODE.fourDecimals.format(x_n + stepSize)) # Always format to 4 decimals
             
 
     def function(selectedEquation, x: float, y: float):
@@ -118,7 +120,7 @@ class ODE:
                 return x * y + math.sqrt(y)     
             
             
-    def exactFunction(selectedEquation, x: float): # TODO:
+    def exactFunction(selectedEquation, x0: float, y0: float, x: float): # TODO:
 
         match selectedEquation:
             case "e^(2y)":
@@ -131,10 +133,12 @@ class ODE:
                 return 1
             
             case "2xy":
-                return 1
+                c = y0 / math.exp( math.pow(x0, 2) )
+                return c * math.exp( math.pow(x, 2) )
             
             case "1 + y²":
-                return 1
+                c = math.tanh(y0) - x0
+                return math.tan(x + c)
             
             case "xy + sqrt(y)":
                 return 1     
