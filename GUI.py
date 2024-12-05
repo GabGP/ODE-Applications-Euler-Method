@@ -118,7 +118,7 @@ class GUI:
                 dpg.add_text("y\'=")                
                 GUI.selectedEquation = dpg.add_combo(items=GUI.equations, width=300)
 
-            dpg.add_button(label="Approximate", indent=244, callback=GUI.approximateButton)
+            dpg.add_button(label=" Approximate ", indent=230, callback=GUI.approximateButton)
 
 
     def solutionTable():
@@ -219,19 +219,29 @@ class GUI:
         print("Clicked \"Approximate\"") # TODO: Remove at the end
         print(dpg.get_value(GUI.radioButton))
 
+        # Cheks if x0 is greater than x
+        if ( (dpg.get_value(GUI.initX) > dpg.get_value(GUI.goalX)) ):
+            GUI.popupWindow(" x0 must be greater than x ")
+            return # Exit
+
+        # Checks if the stepsize or x is greater than 0.01
+        if ( (dpg.get_value(GUI.stepSize)  < 0.01) or (dpg.get_value(GUI.goalX) < 0.01) ):
+            GUI.popupWindow(" The stepsize or x must be greater than 0.01 ")
+            return # Exit
+        
         # Checks if there's a selected equation
-        if (dpg.get_value(GUI.selectedEquation) != ""):
-            ODE.eulerMethod(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
-                            stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
+        if (dpg.get_value(GUI.selectedEquation) == ""):
+            GUI.popupWindow(" Select an equation to approximate ")
+            return # Exit
 
-            ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
-                            stepSize=dpg.get_value(GUI.stepSize))
+        ODE.eulerMethod(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
+                        stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
+
+        ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
+                          stepSize=dpg.get_value(GUI.stepSize))
             
-            GUI.updateGraph()
-            GUI.updateTable()
-
-        else:
-            GUI.popupWindow("Select an Equation to Approximate")
+        GUI.updateGraph()
+        GUI.updateTable()
 
 
     def popupWindow(message: str):
@@ -241,7 +251,7 @@ class GUI:
         dpg.add_window(popup=True, modal=True, no_resize=True, no_title_bar=True, tag="popup_window")
         dpg.add_text(parent="popup_window")
         dpg.add_text(message, parent="popup_window")
-        dpg.add_button(label="OK", indent=windowCenter, callback=lambda: dpg.delete_item("popup_window"), parent="popup_window")
+        dpg.add_button(label=" OK ", indent=windowCenter, callback=lambda: dpg.delete_item("popup_window"), parent="popup_window")
         
         
 GUI.mainWindow()
