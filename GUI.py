@@ -161,7 +161,7 @@ class GUI:
                         if (dpg.get_value(GUI.radioButton) == "Euler Method"):
                             dpg.add_text(ODE.fourDecimals.format(ODE.approx_yAxis[rowNumber]))
                         else:
-                            dpg.add_text("Improved Euler Method") # Placeholder
+                            dpg.add_text(ODE.fourDecimals.format(ODE.improved_approx_yAxis[rowNumber]))
 
                 # Column: Absolute Error
                 with dpg.table_cell():
@@ -192,9 +192,17 @@ class GUI:
 
 
     def updateGraph():
-        dpg.set_value("approx_graph", [ODE.approx_xAxis, ODE.approx_yAxis])
         dpg.set_value("exact_graph", [ODE.exact_xAxis, ODE.exact_yAxis])
 
+        match dpg.get_value(GUI.radioButton):
+
+            #if the radio button selection matches the case, then does what's in there
+            case "Euler Method":
+                dpg.set_value("approx_graph", [ODE.approx_xAxis, ODE.approx_yAxis])
+            
+            case "Improved Euler Method":
+                dpg.set_value("approx_graph", [ODE.improved_approx_xAxis, ODE.improved_approx_yAxis])
+        
 
     def radioButtonAction():
         print(f"Radio Button Action: {dpg.get_value(GUI.radioButton)}") # TODO: Remove at the end
@@ -234,11 +242,14 @@ class GUI:
             GUI.popupWindow(" Select an equation to approximate ")
             return # Exit
 
-        ODE.eulerMethod(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
-                        stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
-
         ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), x=dpg.get_value(GUI.goalX), 
                           stepSize=dpg.get_value(GUI.stepSize))
+        
+        ODE.eulerMethod(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
+                        stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
+        
+        ODE.improvedEulerMethod(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
+                        stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
             
         GUI.updateGraph()
         GUI.updateTable()
