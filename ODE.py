@@ -135,13 +135,17 @@ class ODE:
 
         match selectedEquation:
             case "e^(2y)":
-                return 1
+                c = - x0 - 1 / (2 * math.exp(2 * y0))
+                return -1/2 * math.log( abs(2 * (c - x)) )
             
             case "(x + y - 5)²":
-                return 1
+                c = math.atan(y0 + x0 - 5) - x0
+                return math.tan(x + c)
             
             case "0.9y - 1.8y²":
-                return 1
+                c = (math.log(abs(y0 / (2 * y0 - 1))) / 9) - (x0 / 10)
+                print(c)
+                return (1 / (2 * c * math.exp(0.9 * x) - 2)) + 1/2
             
             case "2xy":
                 c = y0 / math.exp( math.pow(x0, 2) )
@@ -152,7 +156,9 @@ class ODE:
                 return math.tan(x + c)
             
             case "xy + sqrt(y)":
-                return 1     
+                u = (-x0 * math.pow(y0, 1/2))
+                c = u / math.exp((1/4) * x * x)
+                return math.pow((c * math.exp((1/4) * x * x))/x, 2)     
             
     def absoluteError():
 
@@ -175,9 +181,15 @@ class ODE:
         ODE.improved_relError.clear()
 
         for rowNumber in range(len(ODE.approx_yAxis)):
-            # relative error = (absolute error / exact value) * 100%
-            result = (abs(ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
-            ODE.relError.append(result)
 
-            improvedResult = (abs(ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
-            ODE.improved_relError.append(improvedResult)
+            if (float(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber])) != 0.000): # Avoids div by zero error
+                # relative error = |absolute error / exact value| * 100%
+                result = abs(ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber] / ODE.exact_yAxis[rowNumber]) * 100
+                ODE.relError.append(result)
+
+                improvedResult = abs((ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
+                ODE.improved_relError.append(improvedResult)
+            else: 
+                ODE.relError.append(0)
+                ODE.improved_relError.append(0)
+            
