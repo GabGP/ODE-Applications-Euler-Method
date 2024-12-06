@@ -23,7 +23,7 @@ class GUI:
     equations = ["e^(2y)", "(x + y - 5)²", "0.9y - 1.8y²", "2xy", "1 + y²", "xy + sqrt(y)"]
     selectedEquation: str
     radioButton: str
-    rowAmmount = 0
+    rowAmount = 0
 
     def mainWindow():
         dpg.create_context()
@@ -135,7 +135,7 @@ class GUI:
 
     def clearTable():
         # Clearing table
-        for i in range(0, GUI.rowAmmount):
+        for i in range(0, GUI.rowAmount):
             dpg.delete_item(f"row{i}")
 
 
@@ -144,8 +144,8 @@ class GUI:
         GUI.clearTable()
 
         # Updating table
-        GUI.rowAmmount = len(ODE.approx_xAxis)
-        for rowNumber in range(0, GUI.rowAmmount):
+        GUI.rowAmount = len(ODE.approx_xAxis)
+        for rowNumber in range(0, GUI.rowAmount):
             with dpg.table_row(tag=f"row{rowNumber}", parent="solution_table"):
 
                 # Column: x
@@ -242,6 +242,7 @@ class GUI:
             GUI.popupWindow(" Select an equation to approximate ")
             return # Exit
 
+        # Does the calculations
         ODE.exactSolution(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
                         stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
         
@@ -251,6 +252,7 @@ class GUI:
         ODE.improvedEulerMethod(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
                         stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
             
+        # Updates the output
         GUI.updateGraph()
         GUI.updateTable()
 
