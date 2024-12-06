@@ -137,7 +137,7 @@ class ODE:
                 return c * math.exp( math.pow(x, 2) )
             
             case "1 + y²":
-                c = math.tanh(y0) - x0
+                c = math.atan(y0) - x0
                 return math.tan(x + c)
             
             case "xy + sqrt(y)":
