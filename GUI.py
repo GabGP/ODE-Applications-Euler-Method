@@ -272,32 +272,37 @@ class GUI:
 
     def exportTable():
 
-        file = open("ODE Applications: Euler Method - Table.csv", "w")
-        separator = ","
-
-        # Writing file
         GUI.rowAmount = len(ODE.approx_xAxis)
-        for rowNumber in range(0, GUI.rowAmount):
-            # Column: x
-            file.write(ODE.fourDecimals.format(ODE.approx_xAxis[rowNumber]) + separator) 
-
-            # Column: Exact Solution
-            file.write(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber]) + separator)
-
-            if (dpg.get_value(GUI.radioButton) == "Euler Method"):
-                file.write( ODE.fourDecimals.format(ODE.approx_yAxis[rowNumber]) + separator) # Column: Euler Method
-                file.write( ODE.fourDecimals.format(ODE.absError[rowNumber]) + separator) # Column: Absolute Error
-                file.write( ODE.fourDecimals.format(ODE.relError[rowNumber]/100) + separator) # Column: Relative Error
-                file.write("\n") # Next row
-
-            else:
-                file.write( ODE.fourDecimals.format(ODE.improved_approx_yAxis[rowNumber]) + separator) # Column: Improved Euler Method
-                file.write( ODE.fourDecimals.format(ODE.improved_absError[rowNumber]) + separator) # Column: Absolute Error
-                file.write( ODE.fourDecimals.format(ODE.improved_relError[rowNumber]/100) + separator) # Column: Relative Error
-                file.write("\n") # Next row
+        
+        if (GUI.rowAmount != 0):
             
-        file.close()
-        GUI.popupWindow(" Table successfully exported! ")
+            # Writing file
+            file = open("ODE Applications: Euler Method - Table.csv", "w")
+            separator = ","
+
+            for rowNumber in range(0, GUI.rowAmount):
+                # Column: x
+                file.write(ODE.fourDecimals.format(ODE.approx_xAxis[rowNumber]) + separator) 
+
+                # Column: Exact Solution
+                file.write(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber]) + separator)
+
+                if (dpg.get_value(GUI.radioButton) == "Euler Method"):
+                    file.write( ODE.fourDecimals.format(ODE.approx_yAxis[rowNumber]) + separator) # Column: Euler Method
+                    file.write( ODE.fourDecimals.format(ODE.absError[rowNumber]) + separator) # Column: Absolute Error
+                    file.write( ODE.fourDecimals.format(ODE.relError[rowNumber]/100) + separator) # Column: Relative Error
+                    file.write("\n") # Next row
+
+                else:
+                    file.write( ODE.fourDecimals.format(ODE.improved_approx_yAxis[rowNumber]) + separator) # Column: Improved Euler Method
+                    file.write( ODE.fourDecimals.format(ODE.improved_absError[rowNumber]) + separator) # Column: Absolute Error
+                    file.write( ODE.fourDecimals.format(ODE.improved_relError[rowNumber]/100) + separator) # Column: Relative Error
+                    file.write("\n") # Next row
+
+            file.close()
+            GUI.popupWindow(" Table successfully exported! ")
+        else:
+            GUI.popupWindow(" No data to export ")
         
         
 GUI.mainWindow()
