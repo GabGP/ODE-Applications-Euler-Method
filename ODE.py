@@ -157,7 +157,7 @@ class ODE:
             
             case "xy + sqrt(y)":
                 u = (-x0 * math.pow(y0, 1/2))
-                c = u / math.exp((1/4) * x * x)
+                c = u / math.exp((1/4) * x0 * x0)
                 return math.pow((c * math.exp((1/4) * x * x))/x, 2)     
             
     def absoluteError():
