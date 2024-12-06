@@ -2,17 +2,16 @@ import dearpygui.dearpygui as dpg
 from ODE import *
 
 """
-TODO:
-- INPUT:
-    - Stepsize h
-    - Initial Value (x0, y0)
-    - Value to Calculate x
 
+- INPUT:
+    - Initial Value (x0, y0)
+    - Stepsize h
+    - Value to Calculate x
 - OUTPUT:
-    - Solution of the Euler Method
-    - Solution of the improved Euler Method
+    - Solution of the Euler Method/Improved Euler Method
+    - Error per Iteration (Absolute and Relative Error)
     - Plotting of the Exact Solution and Aproximate Solution
-    - Table Error per Iteration (Absolute and Relative Error)
+    
 """
 
 class GUI:
@@ -32,7 +31,7 @@ class GUI:
         # Creates the menu bar of the viewpoint
         with dpg.viewport_menu_bar():
             with dpg.menu(label="File"):
-                dpg.add_menu_item(label="Export Table as .CSV") #TODO: export table as .csv
+                dpg.add_menu_item(label="Export Table as .CSV", callback=GUI.exportTable)
 
             with dpg.menu(label="Help"):
                 dpg.add_menu_item(label="Open README.md") #TODO: open the README
@@ -269,6 +268,36 @@ class GUI:
         dpg.add_text(parent="popup_window")
         dpg.add_text(message, parent="popup_window")
         dpg.add_button(label=" OK ", indent=windowCenter, callback=lambda: dpg.delete_item("popup_window"), parent="popup_window")
+
+
+    def exportTable():
+
+        file = open("ODE Applications: Euler Method - Table.csv", "w")
+        separator = ","
+
+        # Writing file
+        GUI.rowAmount = len(ODE.approx_xAxis)
+        for rowNumber in range(0, GUI.rowAmount):
+            # Column: x
+            file.write(ODE.fourDecimals.format(ODE.approx_xAxis[rowNumber]) + separator) 
+
+            # Column: Exact Solution
+            file.write(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber]) + separator)
+
+            if (dpg.get_value(GUI.radioButton) == "Euler Method"):
+                file.write( ODE.fourDecimals.format(ODE.approx_yAxis[rowNumber]) + separator) # Column: Euler Method
+                file.write( ODE.fourDecimals.format(ODE.absError[rowNumber]) + separator) # Column: Absolute Error
+                file.write( ODE.fourDecimals.format(ODE.relError[rowNumber]/100) + separator) # Column: Relative Error
+                file.write("\n") # Next row
+
+            else:
+                file.write( ODE.fourDecimals.format(ODE.improved_approx_yAxis[rowNumber]) + separator) # Column: Improved Euler Method
+                file.write( ODE.fourDecimals.format(ODE.improved_absError[rowNumber]) + separator) # Column: Absolute Error
+                file.write( ODE.fourDecimals.format(ODE.improved_relError[rowNumber]/100) + separator) # Column: Relative Error
+                file.write("\n") # Next row
+            
+        file.close()
+        GUI.popupWindow(" Table successfully exported! ")
         
         
 GUI.mainWindow()
