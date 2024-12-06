@@ -6,14 +6,25 @@ import math as math
 class ODE:
     fourDecimals = "{:.4f}"
 
+    # Result of the euler method
     approx_xAxis = []
     approx_yAxis = []
 
+    # Result of the improved euler method
     improved_approx_xAxis = []
     improved_approx_yAxis = []
 
+    # Result of the exact solution
     exact_xAxis = []
     exact_yAxis = []
+
+    # Result of the absolute error
+    absError = []
+    improved_absError = []
+
+    # Result of the relative error
+    relError = []
+    improved_relError = []
 
     def eulerMethod(selectedEquation, x0: float, y0: float, x: float, stepSize: float):
 
@@ -142,3 +153,31 @@ class ODE:
             
             case "xy + sqrt(y)":
                 return 1     
+            
+    def absoluteError():
+
+        # Resets the columns
+        ODE.absError.clear()
+        ODE.improved_absError.clear()
+
+        for rowNumber in range(len(ODE.approx_yAxis)):
+            # absolute error = |approximate value - exact value|
+            result = abs(ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber])
+            ODE.absError.append(result)
+
+            improvedResult = abs(ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber])
+            ODE.improved_absError.append(improvedResult)
+    
+    def relativeError():
+
+        # Resets the columns
+        ODE.relError.clear()
+        ODE.improved_relError.clear()
+
+        for rowNumber in range(len(ODE.approx_yAxis)):
+            # relative error = (absolute error / exact value) * 100%
+            result = (abs(ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
+            ODE.relError.append(result)
+
+            improvedResult = (abs(ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
+            ODE.improved_relError.append(improvedResult)

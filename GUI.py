@@ -166,16 +166,16 @@ class GUI:
                 # Column: Absolute Error
                 with dpg.table_cell():
                         if (dpg.get_value(GUI.radioButton) == "Euler Method"):
-                            dpg.add_text("Euler Method") # Placeholder
+                            dpg.add_text(ODE.fourDecimals.format(ODE.absError[rowNumber]))
                         else:
-                            dpg.add_text("Improved Euler Method") # Placeholder
+                            dpg.add_text(ODE.fourDecimals.format(ODE.improved_absError[rowNumber]))
 
                 # Column: Relative Error
                 with dpg.table_cell():
                         if (dpg.get_value(GUI.radioButton) == "Euler Method"):
-                            dpg.add_text("Euler Method") # Placeholder
+                            dpg.add_text(f"{ODE.fourDecimals.format(ODE.relError[rowNumber])}%")
                         else:
-                            dpg.add_text("Improved Euler Method") # Placeholder
+                            dpg.add_text(f"{ODE.fourDecimals.format(ODE.improved_relError[rowNumber])}%")
 
 
     def solutionGraph():
@@ -252,6 +252,10 @@ class GUI:
         ODE.improvedEulerMethod(selectedEquation=dpg.get_value(GUI.selectedEquation), x0=dpg.get_value(GUI.initX), y0=dpg.get_value(GUI.initY), 
                         stepSize=dpg.get_value(GUI.stepSize), x=dpg.get_value(GUI.goalX))
             
+        ODE.absoluteError()
+
+        ODE.relativeError()
+
         # Updates the output
         GUI.updateGraph()
         GUI.updateTable()
