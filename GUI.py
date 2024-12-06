@@ -229,7 +229,7 @@ class GUI:
 
         # Cheks if x0 is greater than x
         if ( (dpg.get_value(GUI.initX) > dpg.get_value(GUI.goalX)) ):
-            GUI.popupWindow(" x0 must be greater than x ")
+            GUI.popupWindow(" x must be greater than x0 ")
             return # Exit
 
         # Checks if the stepsize or x is greater than 0.01
