@@ -164,7 +164,6 @@ class ODE:
     ##
     # Equations
     #
-    
     def function(selectedEquation, x: float, y: float):
 
         match selectedEquation:
