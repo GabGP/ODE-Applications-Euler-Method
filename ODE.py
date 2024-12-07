@@ -184,7 +184,7 @@ class ODE:
 
             if (float(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber])) != 0.000): # Avoids div by zero error
                 # relative error = |absolute error / exact value| * 100%
-                result = abs(ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber] / ODE.exact_yAxis[rowNumber]) * 100
+                result = abs((ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
                 ODE.relError.append(result)
 
                 improvedResult = abs((ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
