@@ -1,4 +1,6 @@
 import math as math
+import numpy as np
+from scipy.integrate import odeint
 
 ## 
 # Ordinary Differential Equation
@@ -14,9 +16,9 @@ class ODE:
     improved_approx_xAxis = []
     improved_approx_yAxis = []
 
-    # Result of the exact solution
+    # Result of the exact solution (NumPy Arrays)
     exact_xAxis = []
-    exact_yAxis = []
+    exact_yAxis = [] 
 
     # Result of the absolute error
     absError = []
@@ -99,66 +101,31 @@ class ODE:
 
         if ((x >= 0.01) and (stepSize >= 0.01)):
 
-            x_n = x0
-            while (x_n <= x): # Do while initial value of x is less or equal than the goal x
-                y = ODE.exactFunction(selectedEquation, x0, y0, x_n)
+            # Creating an array from x to x + stepSize with a stepsize "stepSize"
+            t = np.arange(start=x0, stop=(x + stepSize), step=stepSize)
 
-                ODE.exact_xAxis.append(x_n)
-                ODE.exact_yAxis.append(y)
+            match selectedEquation:
+                case "e^(2y)":
+                    y = odeint(ODE.equation1, y0, t)                
+                case "(x + y - 5)²":
+                    y = odeint(ODE.equation2, y0, t)
+                
+                case "0.9y - 1.8y²":
+                    y = odeint(ODE.equation3, y0, t)
+                
+                case "2xy":
+                    y = odeint(ODE.equation4, y0, t)
+                
+                case "1 + y²":
+                    y = odeint(ODE.equation5, y0, t)
+                
+                case "xy + sqrt(y)":
+                    y = odeint(ODE.equation6, y0, t)   
 
-                x_n = float(ODE.fourDecimals.format(x_n + stepSize)) # Always format to 4 decimals
+            # Converting array back to list
+            ODE.exact_xAxis = t.flatten().tolist()
+            ODE.exact_yAxis = y.flatten().tolist()
             
-
-    def function(selectedEquation, x: float, y: float):
-
-        match selectedEquation:
-            case "e^(2y)":
-                return math.exp(2 * y)
-            
-            case "(x + y - 5)²":
-                return math.pow((x + y - 5), 2)
-            
-            case "0.9y - 1.8y²":
-                return 0.9 * y - 1.8 * math.pow(y, 2)
-            
-            case "2xy":
-                return 2 * x * y
-            
-            case "1 + y²":
-                return 1 + math.pow(y, 2)
-            
-            case "xy + sqrt(y)":
-                return x * y + math.sqrt(y)     
-            
-            
-    def exactFunction(selectedEquation, x0: float, y0: float, x: float): # TODO:
-
-        match selectedEquation:
-            case "e^(2y)":
-                c = - x0 - 1 / (2 * math.exp(2 * y0))
-                return -1/2 * math.log( abs(2 * (c - x)) )
-            
-            case "(x + y - 5)²":
-                c = math.atan(y0 + x0 - 5) - x0
-                return math.tan(x + c)
-            
-            case "0.9y - 1.8y²":
-                c = (math.log(abs(y0 / (2 * y0 - 1))) / 9) - (x0 / 10)
-                print(c)
-                return (1 / (2 * c * math.exp(0.9 * x) - 2)) + 1/2
-            
-            case "2xy":
-                c = y0 / math.exp( math.pow(x0, 2) )
-                return c * math.exp( math.pow(x, 2) )
-            
-            case "1 + y²":
-                c = math.atan(y0) - x0
-                return math.tan(x + c)
-            
-            case "xy + sqrt(y)":
-                u = (-x0 * math.pow(y0, 1/2))
-                c = u / math.exp((1/4) * x0 * x0)
-                return math.pow((c * math.exp((1/4) * x * x))/x, 2)     
             
     def absoluteError():
 
@@ -192,4 +159,48 @@ class ODE:
             else: 
                 ODE.relError.append(0)
                 ODE.improved_relError.append(0)
+
+
+    ##
+    # Equations
+    #
+    
+    def function(selectedEquation, x: float, y: float):
+
+        match selectedEquation:
+            case "e^(2y)":
+                return math.exp(2 * y)
+            
+            case "(x + y - 5)²":
+                return math.pow((x + y - 5), 2)
+            
+            case "0.9y - 1.8y²":
+                return 0.9 * y - 1.8 * math.pow(y, 2)
+            
+            case "2xy":
+                return 2 * x * y
+            
+            case "1 + y²":
+                return 1 + math.pow(y, 2)
+            
+            case "xy + sqrt(y)":
+                return x * y + math.sqrt(y)
+            
+    def equation1(y, x):
+        return math.exp(2 * y)
+    
+    def equation2(y, x):
+        return math.pow((x + y - 5), 2)
+    
+    def equation3(y, x):
+        return 0.9 * y - 1.8 * math.pow(y, 2)
+    
+    def equation4(y, x):
+        return 2 * x * y
+    
+    def equation5(y, x):
+        return 1 + math.pow(y, 2)
+    
+    def equation6(y, x):
+        return x * y + math.sqrt(y) 
             
