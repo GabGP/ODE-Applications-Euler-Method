@@ -33,9 +33,6 @@ class GUI:
             with dpg.menu(label="File"):
                 dpg.add_menu_item(label="Export Table as .CSV", callback=GUI.exportTable)
 
-            with dpg.menu(label="Help"):
-                dpg.add_menu_item(label="Open README.md") #TODO: open the README
-
         # Creates the main window
         with dpg.window(tag="main_window", menubar=True):
 
