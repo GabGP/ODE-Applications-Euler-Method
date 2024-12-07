@@ -37,9 +37,21 @@ class GUI:
         with dpg.window(tag="main_window", menubar=True):
 
             # Select Method section
-            GUI.radioButton = dpg.add_radio_button(["Euler Method", "Improved Euler Method"], callback=GUI.radioButtonAction, 
+            with dpg.group(horizontal=True):
+                GUI.radioButton = dpg.add_radio_button(["Euler Method", "Improved Euler Method"], callback=GUI.radioButtonAction, 
                                                        default_value="Euler Method", horizontal=True)
-           
+                
+                dpg.add_text("(?)", tag="select_method")
+
+                with dpg.tooltip("select_method"):
+                    dpg.add_text(" Methods to approximate y(x) \n")
+                    dpg.add_text("- Euler Method: \n")
+                    dpg.add_text("\ty_(i+1) = y_i + f(x_i, y_i) * h \n")
+                    dpg.add_text("- Improved Euler Method: \n")
+                    dpg.add_text("\tk1_i = f(x_i, y_i) \n")
+                    dpg.add_text("\tk2_i = f(x_i + h, y_i + h * k1_i) \n")
+                    dpg.add_text("\ty_(i+1) = y_i + (h/2)(k1_i + k2_i) \n")
+
             dpg.add_separator()
 
             GUI.layout()
