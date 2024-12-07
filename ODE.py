@@ -113,7 +113,7 @@ class ODE:
 
         match selectedEquation:
             case "e^(2y)":
-                return math.exp(y)
+                return math.exp(2 * y)
             
             case "(x + y - 5)²":
                 return math.pow((x + y - 5), 2)
