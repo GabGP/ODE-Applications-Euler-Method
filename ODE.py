@@ -96,8 +96,8 @@ class ODE:
         stepSize = float(ODE.fourDecimals.format(stepSize))
         
         # Resets the axis
-        ODE.exact_xAxis = []
-        ODE.exact_yAxis = []
+        ODE.exact_xAxis.clear()
+        ODE.exact_yAxis.clear()
 
         if ((x >= 0.01) and (stepSize >= 0.01)):
 
@@ -106,23 +106,25 @@ class ODE:
 
             match selectedEquation:
                 case "e^(2y)":
-                    ODE.exact_yAxis = odeint(ODE.equation1, y0, t)
-                    print(ODE.exact_yAxis.tolist())
-                
+                    y = odeint(ODE.equation1, y0, t)                
                 case "(x + y - 5)²":
-                    ODE.exact_yAxis = odeint(ODE.equation2, y0, t)
+                    y = odeint(ODE.equation2, y0, t)
                 
                 case "0.9y - 1.8y²":
-                    ODE.exact_yAxis = odeint(ODE.equation3, y0, t)
+                    y = odeint(ODE.equation3, y0, t)
                 
                 case "2xy":
-                    ODE.exact_yAxis = odeint(ODE.equation4, y0, t)
+                    y = odeint(ODE.equation4, y0, t)
                 
                 case "1 + y²":
-                    ODE.exact_yAxis = odeint(ODE.equation5, y0, t)
+                    y = odeint(ODE.equation5, y0, t)
                 
                 case "xy + sqrt(y)":
-                    ODE.exact_yAxis = odeint(ODE.equation6, y0, t)       
+                    y = odeint(ODE.equation6, y0, t)   
+
+            # Converting array back to list
+            ODE.exact_xAxis = t.flatten().tolist()
+            ODE.exact_yAxis = y.flatten().tolist()
             
             
     def absoluteError():
@@ -133,10 +135,10 @@ class ODE:
 
         for rowNumber in range(len(ODE.approx_yAxis)):
             # absolute error = |approximate value - exact value|
-            result = abs(ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber, 0])
+            result = abs(ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber])
             ODE.absError.append(result)
 
-            improvedResult = abs(ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber, 0])
+            improvedResult = abs(ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber])
             ODE.improved_absError.append(improvedResult)
     
     def relativeError():
@@ -147,12 +149,12 @@ class ODE:
 
         for rowNumber in range(len(ODE.approx_yAxis)):
 
-            if (float(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber, 0])) != 0.000): # Avoids div by zero error
+            if (float(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber])) != 0.000): # Avoids div by zero error
                 # relative error = |absolute error / exact value| * 100%
-                result = abs((ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber, 0]) / ODE.exact_yAxis[rowNumber, 0]) * 100
+                result = abs((ODE.approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
                 ODE.relError.append(result)
 
-                improvedResult = abs((ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber, 0]) / ODE.exact_yAxis[rowNumber, 0]) * 100
+                improvedResult = abs((ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
                 ODE.improved_relError.append(improvedResult)
             else: 
                 ODE.relError.append(0)
