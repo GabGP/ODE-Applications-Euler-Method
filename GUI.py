@@ -162,7 +162,7 @@ class GUI:
 
                 # Column: Exact Solution
                 with dpg.table_cell():
-                    dpg.add_text(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber]))
+                        dpg.add_text(ODE.fourDecimals.format(ODE.exact_yAxis[rowNumber]))
                 
                 # Column: Euler Method/Improved Euler Method
                 with dpg.table_cell():
@@ -181,9 +181,20 @@ class GUI:
                 # Column: Relative Error
                 with dpg.table_cell():
                         if (dpg.get_value(GUI.radioButton) == "Euler Method"):
-                            dpg.add_text(f"{ODE.fourDecimals.format(ODE.relError[rowNumber])}%")
+                                
+                            if (ODE.relError[rowNumber] != float("inf")):
+                                dpg.add_text(f"{ODE.fourDecimals.format(ODE.relError[rowNumber])}%")
+                            else:
+                                # Adds inf insead of the number + %
+                                dpg.add_text(float("inf")) 
+
                         else:
-                            dpg.add_text(f"{ODE.fourDecimals.format(ODE.improved_relError[rowNumber])}%")
+
+                            if (ODE.improved_relError[rowNumber] != float("inf")):
+                                dpg.add_text(f"{ODE.fourDecimals.format(ODE.improved_relError[rowNumber])}%")
+                            else:
+                                # Adds inf insead of the number + %
+                                dpg.add_text(float("inf"))
 
 
     def solutionGraph():
