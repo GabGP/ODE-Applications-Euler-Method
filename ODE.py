@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.integrate import odeint
+from math import erf
 
 ## 
 # Ordinary Differential Equation
@@ -100,31 +100,14 @@ class ODE:
 
         if ((x >= 0.01) and (stepSize >= 0.01)):
 
-            # Creating an array from x to x + stepSize with a stepsize "stepSize"
-            t = np.arange(start=x0, stop=(x + stepSize), step=stepSize)
+            x_n = x0
+            while (x_n <= x): # Do while initial value of x is less or equal than the goal x
+                y = ODE.exactFunction(selectedEquation, x0, y0, x_n)
 
-            match selectedEquation:
-                case "e^(2y)":
-                    y = odeint(ODE.equation1, y0, t)
+                ODE.exact_xAxis.append(x_n)
+                ODE.exact_yAxis.append(y)
 
-                case "(x + y - 5)²":
-                    y = odeint(ODE.equation2, y0, t)
-                
-                case "0.9y - 1.8y²":
-                    y = odeint(ODE.equation3, y0, t)
-                
-                case "2xy":
-                    y = odeint(ODE.equation4, y0, t)
-                
-                case "1 + y²":
-                    y = odeint(ODE.equation5, y0, t)
-                
-                case "xy + sqrt(y)":
-                    y = odeint(ODE.equation6, y0, t)   
-
-            # Converting array back to list
-            ODE.exact_xAxis = t.flatten().tolist()
-            ODE.exact_yAxis = y.flatten().tolist()
+                x_n = float(ODE.fourDecimals.format(x_n + stepSize)) # Always format to 4 decimals
             
             
     def absoluteError():
@@ -165,41 +148,53 @@ class ODE:
     # Equations
     #
     def function(selectedEquation, x: float, y: float):
+        # The ODEs
 
         match selectedEquation:
             case "e^(2y)":
-                return ODE.equation1(y, x)
+                return np.exp(2 * y)
             
             case "(x + y - 5)²":
-                return ODE.equation2(y, x)
+                return np.pow((x + y - 5), 2)
                        
             case "0.9y - 1.8y²":
-                return ODE.equation3(y, x)
+                return 0.9 * y - 1.8 * np.pow(y, 2)
             
             case "2xy":
-                return ODE.equation4(y, x)
+                return 2 * x * y
             
             case "1 + y²":
-                return ODE.equation5(y, x)
+                return 1 + np.pow(y, 2)
             
             case "xy + sqrt(y)":
-                return ODE.equation6(y, x)
+                return x * y + np.sqrt(y) 
             
-    def equation1(y, x):
-        return np.exp(2 * y)
     
-    def equation2(y, x):
-        return np.pow((x + y - 5), 2)
-    
-    def equation3(y, x):
-        return 0.9 * y - 1.8 * np.pow(y, 2)
-    
-    def equation4(y, x):
-        return 2 * x * y
-    
-    def equation5(y, x):
-        return 1 + np.pow(y, 2)
-    
-    def equation6(y, x):
-        return x * y + np.sqrt(y) 
+    def exactFunction(selectedEquation, x0: float, y0: float, x: float):
+        # Solutions of the ODEs
+
+        match selectedEquation:
+            case "e^(2y)":
+                c = x0 + (np.exp(-2 * y0) / 2)
+                return -1/2 * np.log( abs(2 * (c - x)) )
+            
+            case "(x + y - 5)²":
+                c = np.atan(y0 + x0 - 5) - x0
+                return np.tan(x + c) - x + 5
+            
+            case "0.9y - 1.8y²":
+                c = (2 * np.exp(- (0.9 * x0) ) * y0) / (2 * y0 - 1)
+                return (1 / (2 * c * np.exp(0.9 * x) - 2)) + 1/2
+            
+            case "2xy":
+                c = y0 / np.exp( np.pow(x0, 2) )
+                return c * np.exp( np.pow(x, 2) )
+            
+            case "1 + y²":
+                c = np.atan(y0) - x0
+                return np.tan(x + c)
+            
+            case "xy + sqrt(y)":
+                c = np.sqrt( (4 * y0) * np.exp( - np.pow(x0, 2) / 2) ) - (np.sqrt(np.pi) * erf(x0/2))
+                return 1/4 * np.exp( np.pow(x, 2) / 2) * np.pow(c + np.sqrt(np.pi) * erf(x/2), 2) 
             
