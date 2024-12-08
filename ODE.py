@@ -1,4 +1,3 @@
-import math as math
 import numpy as np
 from scipy.integrate import odeint
 
@@ -106,7 +105,8 @@ class ODE:
 
             match selectedEquation:
                 case "e^(2y)":
-                    y = odeint(ODE.equation1, y0, t)                
+                    y = odeint(ODE.equation1, y0, t)
+
                 case "(x + y - 5)²":
                     y = odeint(ODE.equation2, y0, t)
                 
@@ -157,8 +157,8 @@ class ODE:
                 improvedResult = abs((ODE.improved_approx_yAxis[rowNumber] - ODE.exact_yAxis[rowNumber]) / ODE.exact_yAxis[rowNumber]) * 100
                 ODE.improved_relError.append(improvedResult)
             else: 
-                ODE.relError.append(0)
-                ODE.improved_relError.append(0)
+                ODE.relError.append(np.inf)
+                ODE.improved_relError.append(np.inf)
 
 
     ##
@@ -168,38 +168,38 @@ class ODE:
 
         match selectedEquation:
             case "e^(2y)":
-                return math.exp(2 * y)
+                return ODE.equation1(y, x)
             
             case "(x + y - 5)²":
-                return math.pow((x + y - 5), 2)
-            
+                return ODE.equation2(y, x)
+                       
             case "0.9y - 1.8y²":
-                return 0.9 * y - 1.8 * math.pow(y, 2)
+                return ODE.equation3(y, x)
             
             case "2xy":
-                return 2 * x * y
+                return ODE.equation4(y, x)
             
             case "1 + y²":
-                return 1 + math.pow(y, 2)
+                return ODE.equation5(y, x)
             
             case "xy + sqrt(y)":
-                return x * y + math.sqrt(y)
+                return ODE.equation6(y, x)
             
     def equation1(y, x):
-        return math.exp(2 * y)
+        return np.exp(2 * y)
     
     def equation2(y, x):
-        return math.pow((x + y - 5), 2)
+        return np.pow((x + y - 5), 2)
     
     def equation3(y, x):
-        return 0.9 * y - 1.8 * math.pow(y, 2)
+        return 0.9 * y - 1.8 * np.pow(y, 2)
     
     def equation4(y, x):
         return 2 * x * y
     
     def equation5(y, x):
-        return 1 + math.pow(y, 2)
+        return 1 + np.pow(y, 2)
     
     def equation6(y, x):
-        return x * y + math.sqrt(y) 
+        return x * y + np.sqrt(y) 
             
