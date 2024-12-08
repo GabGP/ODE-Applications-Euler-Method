@@ -192,8 +192,12 @@ class GUI:
 
             dpg.add_plot_legend()
 
-            dpg.add_plot_axis(dpg.mvXAxis, label="x", auto_fit=True)
+            # Creates the axis
+            dpg.add_plot_axis(dpg.mvXAxis, label="x", auto_fit=True, tag="x_axis")
             dpg.add_plot_axis(dpg.mvYAxis, label="y(x)", auto_fit=True, tag="y_axis")
+
+            # Sets a limit to the y axis
+            dpg.set_axis_limits_constraints(axis="y_axis", vmin=0, vmax=1000)
 
             dpg.add_line_series(ODE.exact_xAxis, ODE.exact_yAxis, label="Exact Solution", parent="y_axis", tag="exact_graph")
             dpg.add_line_series(ODE.approx_xAxis, ODE.approx_yAxis, label="Approximate Solution", parent="y_axis", tag="approx_graph")
@@ -204,7 +208,7 @@ class GUI:
 
         match dpg.get_value(GUI.radioButton):
 
-            #if the radio button selection matches the case, then does what's in there
+            # If the radio button selection matches the case, then does what's in there
             case "Euler Method":
                 dpg.set_value("approx_graph", [ODE.approx_xAxis, ODE.approx_yAxis])
             
