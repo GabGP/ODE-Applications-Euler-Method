@@ -114,7 +114,7 @@ class GUI:
             dpg.add_text() # Adds whitespace
 
             # Adds the Solve for y(x) section
-            dpg.add_text("Solve for y(x): ", indent=40)
+            dpg.add_text("Approximate Value of y(x) for: ", indent=40)
             with dpg.group(horizontal=True):
                 dpg.add_text(" x=")
                 GUI.goalX = dpg.add_input_float(step=0.5, width=100, format="%.4f", min_clamped=True, min_value=0.0000)
