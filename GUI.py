@@ -198,7 +198,7 @@ class GUI:
 
                             elif ( isnan(ODE.improved_relError[rowNumber]) ):
                                 dpg.add_text(ODE.improved_relError[rowNumber])
-                                
+
                             else:
                                 # Adds inf/nan instead of the number + %
                                 dpg.add_text(f"{ODE.fourDecimals.format(ODE.improved_relError[rowNumber])}%")
@@ -222,7 +222,16 @@ class GUI:
 
 
     def updateGraph():
-        dpg.set_value("exact_graph", [ODE.exact_xAxis, ODE.exact_yAxis])
+
+        # This simulates "inf" in the graph for the exact solutions
+        exact_y = ODE.exact_yAxis.copy()
+
+        for number in exact_y:
+            if ( number == float("inf")):
+                index = exact_y.index(number)
+                exact_y[index] = float(10000) # Replaces the number in the index for 10 000
+
+        dpg.set_value("exact_graph", [ODE.exact_xAxis, exact_y])
 
         match dpg.get_value(GUI.radioButton):
 
