@@ -1,5 +1,6 @@
 import dearpygui.dearpygui as dpg
 from ODE import *
+from math import isnan
 
 """
 
@@ -181,20 +182,26 @@ class GUI:
                 # Column: Relative Error
                 with dpg.table_cell():
                         if (dpg.get_value(GUI.radioButton) == "Euler Method"):
-                                
-                            if (ODE.relError[rowNumber] != float("inf")):
-                                dpg.add_text(f"{ODE.fourDecimals.format(ODE.relError[rowNumber])}%")
+                            if ( ODE.relError[rowNumber] == float("inf") ):
+                                dpg.add_text( ODE.relError[rowNumber] )
+
+                            elif ( isnan(ODE.relError[rowNumber]) ):
+                                dpg.add_text( ODE.relError[rowNumber] )
+
                             else:
-                                # Adds inf insead of the number + %
-                                dpg.add_text(float("inf")) 
+                                # Adds inf/nan instead of the number + %
+                                dpg.add_text(f"{ODE.fourDecimals.format(ODE.relError[rowNumber])}%")
 
                         else:
+                            if ( ODE.improved_relError[rowNumber] == float("inf") ):
+                                dpg.add_text(ODE.improved_relError[rowNumber])
 
-                            if (ODE.improved_relError[rowNumber] != float("inf")):
-                                dpg.add_text(f"{ODE.fourDecimals.format(ODE.improved_relError[rowNumber])}%")
+                            elif ( isnan(ODE.improved_relError[rowNumber]) ):
+                                dpg.add_text(ODE.improved_relError[rowNumber])
+                                
                             else:
-                                # Adds inf insead of the number + %
-                                dpg.add_text(float("inf"))
+                                # Adds inf/nan instead of the number + %
+                                dpg.add_text(f"{ODE.fourDecimals.format(ODE.improved_relError[rowNumber])}%")
 
 
     def solutionGraph():
